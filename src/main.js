@@ -19,17 +19,31 @@ import './permission' // permission control
 import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
-import ApolloClient from 'apollo-boost'
+import { ApolloClient } from 'apollo-client'
+import { createHttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 import VueApollo from 'vue-apollo'
+
+
+const httpLink = createHttpLink({
+  // You should use an absolute URL here
+  uri: 'http://foodabout-api.flycep.com/graphql/',
+})
+
+// Cache implementation
+const cache = new InMemoryCache()
+
+// Create the apollo client
+const apolloClient = new ApolloClient({
+  link: httpLink,
+  cache,
+})
 
 Vue.use(VueApollo)
 const apolloProvider = new VueApollo({
-  defaultClient: apolloClient
+  defaultClient: apolloClient,
 })
 
-const apolloClient = new ApolloClient({
-  uri: 'http://foodabout-api.flycep.com/graphql/'
-})
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

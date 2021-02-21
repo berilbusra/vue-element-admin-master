@@ -1,7 +1,10 @@
 <template>
-  <div class="apollo">
+  <div>
     <ul v-for="cuisine in cuisines" v-bind:key="cuisine.id">
+      <li>{{cuisine.id}}</li>
       <li>{{cuisine.name}}</li>
+      <li>{{cuisine.icon}}</li>
+      <li>{{cuisine.order}}</li>
     </ul>
   </div>
 </template>
@@ -20,6 +23,6 @@ export default {
         order
       }
     }`  
-  }
+   }
 }
 </script>
