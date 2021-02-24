@@ -23,6 +23,7 @@
         </td>
       </tr>
     </table>
+    <br><button class="button create-button" v-on:click="handleCreate()">Create New Row</button>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :model="tempRow" label-position="left" label-width="150px" class="dialog">
         <el-form-item label="ID">
@@ -184,8 +185,6 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
       if (valid) {
-        this.tempRow.id = parseInt(Math.random() * 100) + 1024 // mock a id
-        this.tempRow.author = 'vue-element-admin'
         createArticle(this.tempRow).then(() => {
           this.rows.unshift(this.tempRow)
           this.dialogFormVisible = false
@@ -287,6 +286,13 @@ export default {
 
   .list-button {
     background-color: darkgray;
+  }
+
+  .create-button {
+    background-color: rgb(238, 127, 36);
+    width: 190px;
+    font-size: 19px;
+    margin-left: 1024px;
   }
 
   .dialog {
