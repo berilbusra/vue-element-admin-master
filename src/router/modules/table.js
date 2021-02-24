@@ -52,7 +52,13 @@ const tableRouter = {
       path: 'food-task-table',
       component: () => import('@/views/table/food-task-table'),
       name: 'FoodTaskTable',
-      meta: { title: 'Food Task Table' }
+      meta: { title: 'Food Table' }
+    },
+    {
+      path: 'menu-table',
+      component: () => import('@/views/table/menu-table'),
+      name: 'MenuTable',
+      meta: { title: 'Menu Table' }
     }
   ]
 }

@@ -17,7 +17,7 @@
         <td class="table-rows">{{ row.companyGSM }}</td>
         <td class="table-rows">
           <button class="button edit-button" v-on:click="handleUpdate(row)">Edit</button>
-          <button class="button delete-button" v-on:click="handleDelete()">Delete</button>
+          <button class="button delete-button" v-on:click="handleDelete(row,$index)">Delete</button>
           <button class="button list-button" v-on:click="handlePList()">Employee
             List</button>
         </td>
