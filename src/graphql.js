@@ -14,6 +14,22 @@ export const ALL_CUISINES_QUERY = gql`query{
   }
 }`
 
+export const CREATE_CUISINE_MUTATION = gql`
+  mutation createCuisine($name: String!, $icon: String!, $order: Int!, $id: Int!) {
+    createCuisine(
+      name: $name,
+      icon: $icon,
+      order: $order,
+      id:$id
+    ) {
+      id
+      name
+      order
+      icon
+    }
+  }
+`
+
 export const UPDATE_CUISINE_MUTATION = gql`
   mutation updateCuisine($name: String!, $icon: String!, $order: Int!, $id: Int!) {
     updateCuisine(
@@ -52,6 +68,24 @@ export const ALL_MENUS_QUERY = gql`query{
     approveStatus
   }
 }`
+
+export const CREATE_MENU_MUTATION = gql`
+  mutation createMenu( $id: Int!, $name: String!, $description: String!, $language: LanguageCodes, $approveStatus: ApproveStatuses) {
+    createMenu(
+      id:$id,
+      name: $name,
+      description: $description,
+      language: LanguageCodes,
+      approveStatus: ApproveStatuses      
+    ) {
+      id
+      name
+      description
+      language
+      approveStatus
+    }
+  }
+`
 
 export const UPDATE_MENU_MUTATION = gql`
   mutation updateMenu( $id: Int!, $name: String!, $description: String!, $language: LanguageCodes, $approveStatus: ApproveStatuses) {

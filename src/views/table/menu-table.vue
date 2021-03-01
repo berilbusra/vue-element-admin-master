@@ -53,7 +53,7 @@
 </template>
 <script>
 import { createArticle, updateArticle } from '@/api/article'
-import { ALL_MENUS_QUERY, UPDATE_MENU_MUTATION, DELETE_MENU_MUTATION} from '@/graphql'
+import { ALL_MENUS_QUERY, UPDATE_MENU_MUTATION, DELETE_MENU_MUTATION, CREATE_MENU_MUTATION} from '@/graphql'
 
 export default {
   data () {
@@ -98,6 +98,16 @@ export default {
         createArticle(this.tempMenu).then(() => {
           this.menus.unshift(this.tempMenu)
           this.dialogFormVisible = false
+           this.$apollo.mutate({
+            mutation: CREATE_MENU_MUTATION,
+            variables: {
+              id: this.id,
+              name: this.name,
+              description: this.description,
+              language:this.language,
+              approveStatus:this.approveStatus
+            },
+          })
           this.$notify({
             title: 'Success',
             message: 'Created Successfully',
