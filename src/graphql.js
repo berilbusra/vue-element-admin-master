@@ -80,3 +80,21 @@ export const DELETE_MENU_MUTATION = gql`
     }
   }
 `
+
+export const UPDATE_USER_MUTATION = gql`
+  mutation updateUser( $id: ID!,$firstName: String!,$lastName: String!,,$email: String!,$password: String!){
+    updateUSer(
+      id:$id,
+      firstName:$firstName,
+      lastName:$lastName,
+      email:$email,
+      password:$password
+    ){
+      id
+      firstName
+      lastName
+      email
+      password
+    }
+  }
+`

@@ -9,7 +9,7 @@
         <th>Approve Status</th>
         <th>Actions</th>
       </tr>
-      <tr v-for="menu in menus" v-bind:key="menu.id">
+      <tr v-for="(menu,ind) in menus" v-bind:key="menu.id">
       <th class="table-rows">{{menu.id}}</th>
       <th class="table-rows">{{menu.name}}</th>
       <th class="table-rows">{{menu.description}}</th>
@@ -17,10 +17,11 @@
       <th class="table-rows">{{menu.approveStatus}}</th>
       <td class="table-rows">
           <button class="button edit-button" v-on:click="handleUpdate(menu)">Edit</button>
-          <button class="button delete-button" v-on:click="handleDelete(menus,$index)">Delete</button>
+          <button class="button delete-button" v-on:click="handleDelete(menu,ind)">Delete</button>
         </td>
       </tr>
     </table>
+    <br><button class="button create-button" v-on:click="handleCreate()">Create New Row</button>
     <el-dialog :visible.sync="dialogFormVisible">
       <el-form ref="editForm" :model="tempMenu" label-position="left" label-width="150px" class="dialog">
         <el-form-item label="ID">
@@ -43,7 +44,7 @@
         <el-button @click="dialogFormVisible = false">
           Cancel
         </el-button>
-        <el-button type="primary" @click="updateMenu(menu)">
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
           Confirm
         </el-button>
       </div>
@@ -74,6 +75,39 @@ export default {
     }
   },
   methods: {
+    resetTempMenu() {
+      this.tempMenu = {
+        id: undefined,
+        name: '',
+        description: '',
+        language:'',
+        approveStatus:'',
+      }
+    },
+    handleCreate() {
+      this.resetTempMenu()
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['editForm'].clearValidate()
+      })
+    },
+    createData() {
+      this.$refs['editForm'].validate((valid) => {
+      if (valid) {
+        createArticle(this.tempMenu).then(() => {
+          this.menus.unshift(this.tempMenu)
+          this.dialogFormVisible = false
+          this.$notify({
+            title: 'Success',
+            message: 'Created Successfully',
+            type: 'success',
+            duration: 2000
+          })
+        })
+      }
+      })
+    },
     handleUpdate(menus) {
       this.tempMenu = Object.assign({}, menus)
       this.dialogStatus = 'update'
@@ -105,14 +139,14 @@ export default {
         }
       })
     },
-    handleDelete(menu, index) {
+    handleDelete(menu, ind) {
       this.$apollo.mutate({
         mutation:DELETE_MENU_MUTATION,
         variables:{
           id:this.id
         }
       })
-      this.menus.splice(index, 1)
+      this.menus.splice(ind, 1)
     },
   },
   apollo: {
@@ -159,4 +193,11 @@ export default {
 .delete-button {
   background-color: #d81717;
 }
+
+.create-button {
+    background-color: rgb(238, 127, 36);
+    width: 190px;
+    font-size: 19px;
+    margin-left: 1024px;
+  }
 </style>

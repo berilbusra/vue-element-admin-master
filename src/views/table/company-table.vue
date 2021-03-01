@@ -9,7 +9,7 @@
         <th>Company GSM</th>
         <th>Actions</th>
       </tr>
-      <tr v-for="row in rows" v-bind:key="row.id" class="table-rows">
+      <tr v-for="(row, ind) in rows" v-bind:key="row.id" class="table-rows">
         <td class="table-rows">{{ row.id }}</td>
         <td class="table-rows">{{ row.company }}</td>
         <td class="table-rows">{{ row.companyAddress }}</td>
@@ -17,7 +17,7 @@
         <td class="table-rows">{{ row.companyGSM }}</td>
         <td class="table-rows">
           <button class="button edit-button" v-on:click="handleUpdate(row)">Edit</button>
-          <button class="button delete-button" v-on:click="handleDelete(row,$index)">Delete</button>
+          <button class="button delete-button" v-on:click="handleDelete(row, ind)">Delete</button>
           <button class="button list-button" v-on:click="handlePList()">Employee
             List</button>
         </td>
@@ -63,7 +63,7 @@
             <th>Birth of Date</th>
             <th>Actions</th>
           </tr>
-          <tr v-for="l in plist" :key="l.pid" class="table-rows">
+          <tr v-for="(l,ind) in plist" :key="l.pid" class="table-rows">
             <td class="table-rows">{{ l.pid }}</td>
             <td class="table-rows">{{ l.pname }}</td>
             <td class="table-rows">{{ l.psurname }}</td>
@@ -71,7 +71,7 @@
             <td class="table-rows">{{ l.telephone }}</td>
             <td class="table-rows">{{ l.birthDate }}</td>
             <td class="table-rows">
-              <button class="button delete-button" @click="handleDeleteEmployee()">Delete</button>
+              <button class="button delete-button" @click="handleDeleteEmployee(l,ind)">Delete</button>
             </td>
           </tr>
         </table>
@@ -224,23 +224,23 @@ export default {
         }
       })
     },
-    handleDelete(row, index) {
+    handleDelete(row, ind) {
       this.$notify({
         title: 'Success',
         message: 'Delete Successfully',
         type: 'success',
         duration: 2000
       })
-      this.rows.splice(index, 1)
+      this.rows.splice(ind,1)
     },
-    handleDeleteEmployee(row, index) {
+    handleDeleteEmployee(row, ind) {
       this.$notify({
         title: 'Success',
         message: 'Delete Successfully',
         type: 'success',
         duration: 2000
       })
-      this.plist.splice(index, 1)
+      this.plist.splice(ind, 1)
     }
   }
 };

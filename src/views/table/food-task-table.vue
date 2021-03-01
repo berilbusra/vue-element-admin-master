@@ -8,17 +8,18 @@
         <th>Cuisine Order</th>
         <th>Actions</th>
       </tr>
-      <tr v-for="cuisine in cuisines" v-bind:key="cuisine.id">
+      <tr v-for="(cuisine,ind) in cuisines" v-bind:key="cuisine.id">
       <th class="table-rows">{{cuisine.id}}</th>
       <th class="table-rows">{{cuisine.name}}</th>
       <th class="table-rows">{{cuisine.icon}}</th>
       <th class="table-rows">{{cuisine.order}}</th>
       <td class="table-rows">
           <button class="button edit-button" v-on:click="handleUpdate(cuisine)">Edit</button>
-          <button class="button delete-button" v-on:click="handleDelete(cuisines,$index)">Delete</button>
+          <button class="button delete-button" v-on:click="handleDelete(cuisines,ind)">Delete</button>
         </td>
       </tr>
     </table>
+    <br><button class="button create-button" v-on:click="handleCreate()">Create New Row</button>
     <el-dialog :visible.sync="dialogFormVisible">
       <el-form ref="editForm" :model="tempCuisine" label-position="left" label-width="150px" class="dialog">
         <el-form-item label="ID">
@@ -38,7 +39,7 @@
         <el-button @click="dialogFormVisible = false">
           Cancel
         </el-button>
-        <el-button type="primary" @click="updateCuisine(cuisine)">
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
           Confirm
         </el-button>
       </div>
@@ -68,6 +69,38 @@ export default {
     }
   },
   methods: {
+    resetTempCuisine() {
+      this.tempCuisine = {
+        id: undefined,
+        name: '',
+        order: '',
+        icon: ''
+      }
+    },
+    handleCreate() {
+      this.resetTempCuisine()
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['editForm'].clearValidate()
+      })
+    },
+    createData() {
+      this.$refs['editForm'].validate((valid) => {
+      if (valid) {
+        createArticle(this.tempCuisine).then(() => {
+          this.cuisines.unshift(this.tempCuisine)
+          this.dialogFormVisible = false
+          this.$notify({
+            title: 'Success',
+            message: 'Created Successfully',
+            type: 'success',
+            duration: 2000
+          })
+        })
+      }
+      })
+    },
     handleUpdate(cuisines) {
       this.tempCuisine = Object.assign({}, cuisines)
       this.dialogStatus = 'update'
@@ -98,14 +131,14 @@ export default {
         }
       })
     },
-    handleDelete(cuisine, index) {
+    handleDelete(cuisine, ind) {
       this.$apollo.mutate({
         mutation:DELETE_CUISINE_MUTATION,
         variables:{
           id:this.id
         }
       })
-      this.cuisines.splice(index, 1)
+      this.cuisines.splice(ind, 1)
     },
   },
   apollo: {
@@ -151,5 +184,12 @@ export default {
 
 .delete-button {
   background-color: #d81717;
+}
+
+.create-button {
+  background-color: rgb(238, 127, 36);
+  width: 190px;
+  font-size: 19px;
+  margin-left: 1024px;
 }
 </style>
