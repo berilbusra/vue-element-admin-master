@@ -15,7 +15,7 @@
       <th class="table-rows">{{cuisine.order}}</th>
       <td class="table-rows">
           <button class="button edit-button" v-on:click="handleUpdate(cuisine)">Edit</button>
-          <button class="button delete-button" v-on:click="handleDelete(cuisines,ind)">Delete</button>
+          <button class="button delete-button" v-on:click="handleDelete(cuisine,ind)">Delete</button>
         </td>
       </tr>
     </table>
@@ -39,7 +39,7 @@
         <el-button @click="dialogFormVisible = false">
           Cancel
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateCuisine()">
           Confirm
         </el-button>
       </div>

@@ -44,7 +44,7 @@
         <el-button @click="dialogFormVisible = false">
           Cancel
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateMenu()">
           Confirm
         </el-button>
       </div>
