@@ -98,8 +98,7 @@ export default {
               id: this.id,
               order: this.order,
               icon:this.icon
-            },
-            
+            }
           })
           this.$notify({
             title: 'Success',
