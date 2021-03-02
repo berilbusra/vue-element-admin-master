@@ -97,8 +97,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin@foodabout.com',
-        password: 'pbkdf2_sha256$216000$AjMPhuY5libo$IphcrXEjifdeLZ4efmXoOQqB3ymQX1zPaagizY+JIvE='
+        username: 'admin',
+        password: '1111'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
