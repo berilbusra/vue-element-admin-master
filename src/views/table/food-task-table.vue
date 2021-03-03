@@ -94,31 +94,26 @@ export default {
       this.resetTempCuisine()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['editForm'].clearValidate()
-      })
     },
     createData() {
       this.$refs['editForm'].validate((valid) => {
       if (valid) {
-        createArticle(this.tempCuisine).then(() => {
-          this.cuisines.unshift(this.tempCuisine)
-          this.dialogFormVisible = false
-          this.$apollo.mutate({
-            mutation: CREATE_CUISINE_MUTATION,
-            variables: {
-              name: this.name,
-              id: this.id,
-              order: this.order,
-              icon:this.icon
-            }
-          })
-          this.$notify({
-            title: 'Success',
-            message: 'Created Successfully',
-            type: 'success',
-            duration: 2000
-          })
+        this.cuisines.unshift(this.tempCuisine)
+        this.dialogFormVisible = false
+        this.$apollo.mutate({
+          mutation: CREATE_CUISINE_MUTATION,
+          variables: {
+            name: this.name,
+            id: this.id,
+            order: this.order,
+            icon:this.icon
+          }
+        })
+        this.$notify({
+          title: 'Success',
+          message: 'Created Successfully',
+          type: 'success',
+          duration: 2000
         })
       }
       })

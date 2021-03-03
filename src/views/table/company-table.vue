@@ -216,9 +216,6 @@
         this.resetTempRow()
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
-        this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
-        })
       },
       createData() {
         this.$refs['dataForm'].validate((valid) => {
@@ -240,22 +237,19 @@
         this.tempRow = Object.assign({}, rows)
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
-        this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
-        })
       },
       updateData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-              const index = this.rows.findIndex(v => v.id === this.tempRow.id)
-              this.rows.splice(index, 1, this.tempRow)
-              this.dialogFormVisible = false
-              this.$notify({
-                title: 'Success',
-                message: 'Update Successfully',
-                type: 'success',
-                duration: 2000
-              })
+            const index = this.rows.findIndex(v => v.id === this.tempRow.id)
+            this.rows.splice(index, 1, this.tempRow)
+            this.dialogFormVisible = false
+            this.$notify({
+              title: 'Success',
+              message: 'Update Successfully',
+              type: 'success',
+              duration: 2000
+            })
           }
         })
       },

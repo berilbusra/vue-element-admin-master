@@ -104,14 +104,10 @@ export default {
       this.resetTempMenu()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['editForm'].clearValidate()
-      })
     },
     createData() {
       this.$refs['editForm'].validate((valid) => {
       if (valid) {
-        createArticle(this.tempMenu).then(() => {
           this.menus.unshift(this.tempMenu)
           this.dialogFormVisible = false
            this.$apollo.mutate({
@@ -130,7 +126,6 @@ export default {
             type: 'success',
             duration: 2000
           })
-        })
       }
       })
     },
@@ -138,19 +133,13 @@ export default {
       this.tempMenu = Object.assign({}, menus)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['editForm'].clearValidate()
-      })
     },
     updateMenu() {
       this.$refs['editForm'].validate((valid) => {
         if (valid) {
-          const menuData = Object.assign({}, this.tempMenu)
-          updateArticle(menuData).then(() => {
-            const index = this.menus.findIndex(v => v.id === this.tempMenu.id)
-            this.menus.splice(index, 1, this.tempMenu)
-            this.dialogFormVisible = false
-          })
+          const index = this.menus.findIndex(v => v.id === this.tempMenu.id)
+          this.menus.splice(index, 1, this.tempMenu)
+          this.dialogFormVisible = false
           this.$apollo.mutate({
             mutation: UPDATE_MENU_MUTATION,
             variables: {
