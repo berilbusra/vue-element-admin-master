@@ -1,24 +1,37 @@
 <template>
   <div>
-    <table class="table">
-      <tr class="table-rows">
-        <th>ID</th>
-        <th>Cuisine Name</th>
-        <th>Cuisine Icon</th>
-        <th>Cuisine Order</th>
-        <th>Actions</th>
-      </tr>
-      <tr v-for="(cuisine,ind) in cuisines" v-bind:key="cuisine.id">
-      <th class="table-rows">{{cuisine.id}}</th>
-      <th class="table-rows">{{cuisine.name}}</th>
-      <th class="table-rows">{{cuisine.icon}}</th>
-      <th class="table-rows">{{cuisine.order}}</th>
-      <td class="table-rows">
-          <button class="button edit-button" v-on:click="handleUpdate(cuisine)">Edit</button>
-          <button class="button delete-button" v-on:click="handleDelete(cuisine,ind)">Delete</button>
-        </td>
-      </tr>
-    </table>
+    <el-table :data="cuisines">
+      <el-table-column label="ID" sortable="custom" align="center" width="80" >
+        <template slot-scope="{row}">
+          <span>{{ row.id }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Menu Name">
+        <template slot-scope="{row}">
+          <span>{{ row.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Menu Description" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.icon }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Language" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.order }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Actions" align="center" width="350">
+        <template slot-scope="{row,$index}">
+          <el-button class="button edit-button" @click="handleUpdate(row)">
+            Edit
+          </el-button>
+          <el-button class="button delete-button" @click="handleDelete(row,$index)">
+            Delete
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
     <br><button class="button create-button" v-on:click="handleCreate()">Create New Row</button>
     <el-dialog :visible.sync="dialogFormVisible">
       <el-form ref="editForm" :model="tempCuisine" label-position="left" label-width="150px" class="dialog">
@@ -114,19 +127,13 @@ export default {
       this.tempCuisine = Object.assign({}, cuisines)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['editForm'].clearValidate()
-      })
     },
     updateCuisine() {
       this.$refs['editForm'].validate((valid) => {
         if (valid) {
-          const cuisineData = Object.assign({}, this.tempCuisine)
-          updateArticle(cuisineData).then(() => {
-            const index = this.cuisines.findIndex(v => v.id === this.tempCuisine.id)
-            this.cuisines.splice(index, 1, this.tempCuisine)
-            this.dialogFormVisible = false
-          })
+          const index = this.cuisines.findIndex(v => v.id === this.tempCuisine.id)
+          this.cuisines.splice(index, 1, this.tempCuisine)
+          this.dialogFormVisible = false
           this.$apollo.mutate({
             mutation: UPDATE_CUISINE_MUTATION,
             variables: {

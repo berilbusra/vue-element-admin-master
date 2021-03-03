@@ -1,26 +1,42 @@
 <template>
   <div>
-    <table class="table">
-      <tr class="table-rows">
-        <th>ID</th>
-        <th>Menu Name</th>
-        <th>Menu Description</th>
-        <th>Language</th>
-        <th>Approve Status</th>
-        <th>Actions</th>
-      </tr>
-      <tr v-for="(menu,ind) in menus" v-bind:key="menu.id">
-      <th class="table-rows">{{menu.id}}</th>
-      <th class="table-rows">{{menu.name}}</th>
-      <th class="table-rows">{{menu.description}}</th>
-      <th class="table-rows">{{menu.language}}</th>
-      <th class="table-rows">{{menu.approveStatus}}</th>
-      <td class="table-rows">
-          <button class="button edit-button" v-on:click="handleUpdate(menu)">Edit</button>
-          <button class="button delete-button" v-on:click="handleDelete(menu,ind)">Delete</button>
-        </td>
-      </tr>
-    </table>
+    <el-table :data="menus">
+      <el-table-column label="ID" sortable="custom" align="center" width="80" >
+        <template slot-scope="{row}">
+          <span>{{ row.id }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Menu Name">
+        <template slot-scope="{row}">
+          <span>{{ row.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Menu Description" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.description }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Language" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.language }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Approve Status" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.approveStatus }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Actions" align="center" width="350">
+        <template slot-scope="{row,$index}">
+          <el-button class="button edit-button" @click="handleUpdate(row)">
+            Edit
+          </el-button>
+          <el-button class="button delete-button" @click="handleDelete(row,$index)">
+            Delete
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
     <br><button class="button create-button" v-on:click="handleCreate()">Create New Row</button>
     <el-dialog :visible.sync="dialogFormVisible">
       <el-form ref="editForm" :model="tempMenu" label-position="left" label-width="150px" class="dialog">
@@ -149,7 +165,7 @@ export default {
         }
       })
     },
-    handleDelete(menu, ind) {
+    handleDelete(row, ind) {
       this.$apollo.mutate({
         mutation:DELETE_MENU_MUTATION,
         variables:{
