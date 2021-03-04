@@ -61,7 +61,6 @@
 </template>
 
 <script>
-import { createArticle, updateArticle } from '@/api/article'
 import { ALL_CUISINES_QUERY,DELETE_CUISINE_MUTATION,UPDATE_CUISINE_MUTATION, CREATE_CUISINE_MUTATION } from '@/graphql'
 
 export default {
@@ -103,10 +102,12 @@ export default {
         this.$apollo.mutate({
           mutation: CREATE_CUISINE_MUTATION,
           variables: {
-            name: this.name,
-            id: this.id,
-            order: this.order,
-            icon:this.icon
+            data:{
+              name: this.name,
+              id: this.id,
+              order: this.order,
+              icon:this.icon
+            }
           }
         })
         this.$notify({

@@ -15,33 +15,27 @@ export const ALL_CUISINES_QUERY = gql`query{
 }`
 
 export const CREATE_CUISINE_MUTATION = gql`
-  mutation createCuisine($name: String!, $icon: String!, $order: Int!, $id: Int!) {
-    createCuisine(
-      name: $name,
-      icon: $icon,
-      order: $order,
-      id:$id
-    ) {
-      id
-      name
-      order
-      icon
+  mutation createCuisine($data: CreateCuisineInput!) {
+    createCuisine(data: $data) {
+      cuisine{
+        id
+        name
+        icon
+        order
+      }
     }
   }
 `
 
 export const UPDATE_CUISINE_MUTATION = gql`
-  mutation updateCuisine($name: String!, $icon: String!, $order: Int!, $id: Int!) {
-    updateCuisine(
-      name: $name,
-      icon: $icon,
-      order: $order,
-      id:$id
-    ) {
-      id
-      name
-      order
-      icon
+  mutation updateCuisine($data: UpdateCuisineInput!) {
+    updateCuisine(data: $data) {
+      cuisine{
+        id
+        name
+        icon
+        order
+      }
     }
   }
 `
@@ -70,32 +64,25 @@ export const ALL_MENUS_QUERY = gql`query{
 }`
 
 export const CREATE_MENU_MUTATION = gql`
-  mutation createMenu( $id: Int!, $name: String!, $description: String!, $language: LanguageCodes, $approveStatus: ApproveStatuses) {
+  mutation createMenu( $data: CreateMenuInput! ) {
     createMenu(
-      id:$id,
-      name: $name,
-      description: $description,
-      language: LanguageCodes,
-      approveStatus: ApproveStatuses      
+      data: $data    
     ) {
-      id
-      name
-      description
-      language
-      approveStatus
+      menu{
+        id
+        name
+        description
+        language
+        approveStatus
+      }
     }
   }
 `
 
 export const UPDATE_MENU_MUTATION = gql`
-  mutation updateMenu( $id: Int!, $name: String!, $description: String!, $language: LanguageCodes, $approveStatus: ApproveStatuses) {
-    updateMenu(
-      id:$id,
-      name: $name,
-      description: $description,
-      language: LanguageCodes,
-      approveStatus: ApproveStatuses      
-    ) {
+  mutation updateMenu($data: UpdateMenuInput!) {
+  updateMenu(data: $data) {
+    menu {
       id
       name
       description
@@ -103,6 +90,7 @@ export const UPDATE_MENU_MUTATION = gql`
       approveStatus
     }
   }
+}
 `
 
 export const DELETE_MENU_MUTATION = gql`

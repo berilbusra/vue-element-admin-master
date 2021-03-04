@@ -68,7 +68,6 @@
   </div>
 </template>
 <script>
-import { createArticle, updateArticle } from '@/api/article'
 import { ALL_MENUS_QUERY, UPDATE_MENU_MUTATION, DELETE_MENU_MUTATION, CREATE_MENU_MUTATION} from '@/graphql'
 
 export default {
@@ -113,11 +112,13 @@ export default {
            this.$apollo.mutate({
             mutation: CREATE_MENU_MUTATION,
             variables: {
-              id: this.id,
-              name: this.name,
-              description: this.description,
-              language:this.language,
-              approveStatus:this.approveStatus
+              data: {
+                id:this.id,
+                name: this.name,
+                description:this.description,
+                language:this.language,
+                approveStatus:this.approveStatus
+              }
             },
           })
           this.$notify({
@@ -143,25 +144,26 @@ export default {
           this.$apollo.mutate({
             mutation: UPDATE_MENU_MUTATION,
             variables: {
-              id: this.id,
-              name: this.name,
-              description: this.description,
-              language:this.language,
-              approveStatus:this.approveStatus
-            },
-            
+              data:{
+                id: this.id,
+                name: this.name,
+                description: this.description,
+                language:this.language,
+                approveStatus:this.approveStatus
+              }
+            }
           })
         }
       })
     },
-    handleDelete(row, ind) {
+    handleDelete(row, index) {
       this.$apollo.mutate({
         mutation:DELETE_MENU_MUTATION,
         variables:{
           id:this.id
         }
       })
-      this.menus.splice(ind, 1)
+      this.menus.splice(index, 1)
     },
   },
   apollo: {
@@ -213,6 +215,5 @@ export default {
     background-color: rgb(238, 127, 36);
     width: 190px;
     font-size: 19px;
-    margin-left: 1024px;
   }
 </style>
