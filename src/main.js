@@ -24,7 +24,6 @@ import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import VueApollo from 'vue-apollo'
 
-
 const httpLink = createHttpLink({
   // You should use an absolute URL here
   uri: 'http://foodabout-api.flycep.com/graphql/',
