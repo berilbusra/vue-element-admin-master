@@ -321,7 +321,6 @@
     background-color: rgb(238, 127, 36);
     width: 190px;
     font-size: 19px;
-    margin-left: 1024px;
   }
 
   .dialog {

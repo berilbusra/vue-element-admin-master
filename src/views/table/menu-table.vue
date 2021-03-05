@@ -16,14 +16,19 @@
           <span>{{ row.description }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Language" align="center">
+      <el-table-column label="Restaurant" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.language }}</span>
+          <span>{{ row.restaurants.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Approve Status" align="center">
+      <el-table-column label="Order" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.approveStatus }}</span>
+          <span>{{ row.order }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Photo" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.photo }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Actions" align="center" width="350">
@@ -49,11 +54,14 @@
         <el-form-item label="Menu Description">
           <el-input v-model="tempMenu.description" />
         </el-form-item>
-        <el-form-item label="Language">
-          <el-input v-model="tempMenu.language" />
+        <el-form-item label="Restaurants">
+          <el-input v-model="tempMenu.restaurants" />
         </el-form-item>
-        <el-form-item label="Approval Status">
-          <el-input v-model="tempMenu.approveStatus" />
+        <el-form-item label="Order">
+          <el-input v-model="tempMenu.order" />
+        </el-form-item>
+        <el-form-item label="Photo">
+          <el-input v-model="tempMenu.photo" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -76,16 +84,18 @@ export default {
       name: '',
       id: '',
       description: '',
-      language:'',
-      approveStatus:'',
+      restaurants:'',
+      order:'',
+      photo:'',
       dialogFormVisible: false,
       dialogStatus: '',
       tempMenu: {
         id: undefined,
         name: '',
         description: '',
-        language:'',
-        approveStatus:'',
+        restaurants:'',
+        order:'',
+        photo:''
       }
     }
   },
@@ -95,8 +105,9 @@ export default {
         id: undefined,
         name: '',
         description: '',
-        language:'',
-        approveStatus:'',
+        restaurants:'',
+        order:'',
+        photo:''
       }
     },
     handleCreate() {
@@ -105,6 +116,8 @@ export default {
       this.dialogFormVisible = true
     },
     createData() {
+      console.log("gg", this.tempMenu)
+      delete this.tempMenu.__typename
       this.$refs['editForm'].validate((valid) => {
       if (valid) {
           this.menus.unshift(this.tempMenu)
@@ -112,14 +125,8 @@ export default {
            this.$apollo.mutate({
             mutation: CREATE_MENU_MUTATION,
             variables: {
-              data: {
-                id:this.id,
-                name: this.name,
-                description:this.description,
-                language:this.language,
-                approveStatus:this.approveStatus
-              }
-            },
+              data:this.tempMenu
+            }
           })
           this.$notify({
             title: 'Success',
@@ -136,6 +143,8 @@ export default {
       this.dialogFormVisible = true
     },
     updateMenu() {
+      //console.log("gg",this.tempMenu)
+      delete this.tempMenu.__typename
       this.$refs['editForm'].validate((valid) => {
         if (valid) {
           const index = this.menus.findIndex(v => v.id === this.tempMenu.id)
@@ -144,23 +153,18 @@ export default {
           this.$apollo.mutate({
             mutation: UPDATE_MENU_MUTATION,
             variables: {
-              data:{
-                id: this.id,
-                name: this.name,
-                description: this.description,
-                language:this.language,
-                approveStatus:this.approveStatus
-              }
-            }
+              data:this.tempMenu
+            },
+            
           })
         }
       })
     },
-    handleDelete(row, index) {
+    handleDelete(menu, index) {
       this.$apollo.mutate({
         mutation:DELETE_MENU_MUTATION,
         variables:{
-          id:this.id
+          id:menu.id
         }
       })
       this.menus.splice(index, 1)

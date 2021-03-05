@@ -69,11 +69,14 @@ export const CREATE_MENU_MUTATION = gql`
       data: $data    
     ) {
       menu{
-        id
+        id  
         name
         description
-        language
-        approveStatus
+        order
+        restaurants{
+          name
+        }
+        photo
       }
     }
   }
@@ -86,8 +89,11 @@ export const UPDATE_MENU_MUTATION = gql`
       id
       name
       description
-      language
-      approveStatus
+      order
+      restaurants{
+        name
+      }
+      photo
     }
   }
 }

@@ -6,17 +6,17 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Menu Name">
+      <el-table-column label="Cuisine Name">
         <template slot-scope="{row}">
           <span>{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Menu Description" align="center">
+      <el-table-column label="Cuisine Icon" align="center">
         <template slot-scope="{row}">
           <span>{{ row.icon }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Language" align="center">
+      <el-table-column label="Cuisine Order" align="center">
         <template slot-scope="{row}">
           <span>{{ row.order }}</span>
         </template>
@@ -34,7 +34,7 @@
     </el-table>
     <br><button class="button create-button" v-on:click="handleCreate()">Create New Row</button>
     <el-dialog :visible.sync="dialogFormVisible">
-      <el-form ref="editForm" :model="tempCuisine" label-position="left" label-width="150px" class="dialog">
+      <el-form ref="editForm" :rules="rules" :model="tempCuisine" label-position="left" label-width="150px" class="dialog">
         <el-form-item label="ID">
           <el-input v-model="tempCuisine.id" />
         </el-form-item>
@@ -44,7 +44,7 @@
         <el-form-item label="Cuisine Icon">
           <el-input v-model="tempCuisine.icon" />
         </el-form-item>
-        <el-form-item label="Cuisine Order">
+        <el-form-item label="Cuisine Order" prop="order">
           <el-input v-model="tempCuisine.order" />
         </el-form-item>
       </el-form>
@@ -77,7 +77,10 @@ export default {
         name: '',
         order: '',
         icon: ''
-      }
+      },
+      rules: {
+        order: [{ required: true, message: 'order is required', trigger: 'blur' }]
+      },
     }
   },
   methods: {
@@ -95,6 +98,7 @@ export default {
       this.dialogFormVisible = true
     },
     createData() {
+      //console.log("gg",this.tempCuisine)
       this.$refs['editForm'].validate((valid) => {
       if (valid) {
         this.cuisines.unshift(this.tempCuisine)
@@ -102,12 +106,7 @@ export default {
         this.$apollo.mutate({
           mutation: CREATE_CUISINE_MUTATION,
           variables: {
-            data:{
-              name: this.name,
-              id: this.id,
-              order: this.order,
-              icon:this.icon
-            }
+            data:this.tempCuisine
           }
         })
         this.$notify({
@@ -125,6 +124,9 @@ export default {
       this.dialogFormVisible = true
     },
     updateCuisine() {
+      //console.log("gg",this.tempCuisine)
+      delete this.tempCuisine.__typename
+      delete this.tempCuisine.restaurants
       this.$refs['editForm'].validate((valid) => {
         if (valid) {
           const index = this.cuisines.findIndex(v => v.id === this.tempCuisine.id)
@@ -133,24 +135,21 @@ export default {
           this.$apollo.mutate({
             mutation: UPDATE_CUISINE_MUTATION,
             variables: {
-              name: this.name,
-              id: this.id,
-              order: this.order,
-              icon:this.icon
+             data:this.tempCuisine
             },
             
           })
         }
       })
     },
-    handleDelete(cuisine, ind) {
+    handleDelete(cuisine, index) {
       this.$apollo.mutate({
         mutation:DELETE_CUISINE_MUTATION,
         variables:{
-          id:this.id
+          id:cuisine.id
         }
       })
-      this.cuisines.splice(ind, 1)
+      this.cuisines.splice(index, 1)
     },
   },
   apollo: {
@@ -202,6 +201,5 @@ export default {
   background-color: rgb(238, 127, 36);
   width: 190px;
   font-size: 19px;
-  margin-left: 1024px;
 }
 </style>
