@@ -16,12 +16,12 @@
           <span>{{ row.description }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Restaurant" align="center">
+      <el-table-column label="Restaurant No" align="center">
         <template slot-scope="{row}">
           <span>{{ row.restaurants }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Order" align="center">
+      <el-table-column label="Order No" align="center">
         <template slot-scope="{row}">
           <span>{{ row.order }}</span>
         </template>
@@ -44,7 +44,7 @@
     </el-table>
     <br><button class="button create-button" v-on:click="handleCreate()">Create New Row</button>
     <el-dialog :visible.sync="dialogFormVisible">
-      <el-form ref="editForm" :model="tempMenu" label-position="left" label-width="150px" class="dialog">
+      <el-form ref="editForm" :rules="rules" :model="tempMenu" label-position="left" label-width="150px" class="dialog">
         <el-form-item label="ID">
           <el-input v-model="tempMenu.id" />
         </el-form-item>
@@ -54,10 +54,10 @@
         <el-form-item label="Menu Description">
           <el-input v-model="tempMenu.description" />
         </el-form-item>
-        <el-form-item label="Restaurants">
+        <el-form-item label="Restaurant No" prop="restaurants">
           <el-input v-model="tempMenu.restaurants" />
         </el-form-item>
-        <el-form-item label="Order">
+        <el-form-item label="Order No" prop="order">
           <el-input v-model="tempMenu.order" />
         </el-form-item>
         <el-form-item label="Photo">
@@ -96,7 +96,11 @@ export default {
         restaurants:'',
         order:'',
         photo:''
-      }
+      },
+      rules: {
+        order: [{ required: true, message: 'order is required', trigger: 'blur' }],
+        restaurants: [{ required: true, message: 'restaurant no is required', trigger: 'blur' }]
+      },
     }
   },
   methods: {

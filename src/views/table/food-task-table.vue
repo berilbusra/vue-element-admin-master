@@ -44,7 +44,7 @@
         <el-form-item label="Cuisine Icon">
           <el-input v-model="tempCuisine.icon" />
         </el-form-item>
-        <el-form-item label="Cuisine Order" prop="order">
+        <el-form-item label="Cuisine Order No" prop="order">
           <el-input v-model="tempCuisine.order" />
         </el-form-item>
       </el-form>
