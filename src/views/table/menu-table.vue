@@ -18,7 +18,7 @@
       </el-table-column>
       <el-table-column label="Restaurant No" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.restaurants }}</span>
+          <span>{{ row.restaurants.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Order No" align="center">
